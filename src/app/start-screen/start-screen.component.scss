@@ -7,7 +7,26 @@
     justify-content: center;
     align-content: center;
 
-    img{
+    img {
         height: 100vh;
+    }
+
+    .start-label-box {
+        position: absolute;
+        left: 32px;
+        right: 0;
+        bottom: 220px;
+        display: flex;
+        justify-content: center;
+
+        img {
+            width: 20vw;
+            height: auto;
+
+            &:hover {
+                filter: brightness(1.25);
+                cursor: pointer;
+            }
+        }
     }
 }
