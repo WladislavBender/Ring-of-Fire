@@ -8,6 +8,6 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-stroked-button (click)="onNoClick()">No Thanks</button>
-  <button mat-flat-button [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+  <button mat-flat-button [mat-dialog-close]="name" cdkFocusInitial>Ok</button>
 </mat-dialog-actions>
 
