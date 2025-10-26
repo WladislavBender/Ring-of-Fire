@@ -8,7 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-game',
@@ -44,8 +45,13 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
+    const itemsCollection = collection(this.firestore, 'games');
+
+    addDoc(itemsCollection, this.game.toJson());
+
     console.log(this.game);
   }
+
 
   takeCard() {
     if (!this.pickCardAnimation) {
