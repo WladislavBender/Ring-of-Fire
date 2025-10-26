@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
@@ -30,10 +31,15 @@ export class GameComponent implements OnInit {
   game!: Game;
 
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private firestore: Firestore, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.newGame();
+
+    const itemsCollection = collection(this.firestore, 'games');
+    collectionData(itemsCollection).subscribe((game) => {
+      console.log('Game update', game);
+    });
   }
 
   newGame() {
