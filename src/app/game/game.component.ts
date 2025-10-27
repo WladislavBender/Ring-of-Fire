@@ -38,11 +38,11 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.route.params.subscribe((params) => {
       this.gameId = params['id'];
-      console.log('Game ID:', this.gameId);
+      // console.log('Game ID:', this.gameId);
       const gameDoc = doc(this.firestore, 'games', this.gameId);
       this.gameSub = docData(gameDoc).subscribe((gameData: any) => {
         if (gameData) {
-          console.log('Game update:', gameData);
+          // console.log('Game update:', gameData);
           this.game = new Game();
           Object.assign(this.game, gameData);
         }
