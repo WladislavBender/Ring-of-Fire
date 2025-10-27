@@ -28,8 +28,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  pickCardAnimation = false;
-  currentCard?: string = '';
   game!: Game;
   gameId!: string;
   gameSub?: Subscription;
@@ -61,22 +59,32 @@ export class GameComponent implements OnInit {
   }
 
   async takeCard() {
-    if (!this.pickCardAnimation) {
+    if (!this.game.pickCardAnimation && this.game.stack.length > 0) {
       const card = this.game.stack.pop();
       if (card) {
-        this.currentCard = card;
-        this.pickCardAnimation = true;
+        this.game.currentCard = card;
+        this.game.pickCardAnimation = true;
         this.game.currentPlayer++;
         this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+        const gameDoc = doc(this.firestore, 'games', this.gameId);
+        await updateDoc(gameDoc, {
+          currentCard: this.game.currentCard,
+          pickCardAnimation: true,
+          currentPlayer: this.game.currentPlayer,
+          stack: this.game.stack
+        });
         setTimeout(async () => {
           this.game.playedCards.push(card);
-          this.pickCardAnimation = false;
-          const gameDoc = doc(this.firestore, 'games', this.gameId);
-          await updateDoc(gameDoc, { ...this.game });
+          this.game.pickCardAnimation = false;
+          await updateDoc(gameDoc, {
+            playedCards: this.game.playedCards,
+            pickCardAnimation: false
+          });
         }, 1000);
       }
     }
   }
+
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
